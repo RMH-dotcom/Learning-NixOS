@@ -91,7 +91,7 @@ wireshark
 # Hybrid graphics (Intel + NVIDIA)
 environment.systemPackages = [ nvidia-offload ]; services.xserver.videoDrivers = [ "nvidia" ]: hardware.nvidia = {
 powerManagement = {
-  enabled = true:
+  enabled = true;
 };
 
 # Uses stable NUIDIA drivers
@@ -120,3 +120,4 @@ boot.kernelModules = [ "msr" ];
 
 # System state version
 system.stateVersion = "24.05";
+}
