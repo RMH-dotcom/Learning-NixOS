@@ -95,7 +95,7 @@ powerManagement = {
 };
 
 # Uses stable NUIDIA drivers
-package = config.boot.kernelPackages.nvidiaPackages.stable;
+package = config.boot.kernelPackages.nvidiaPackages.beta;
 
 # Fixes a glitch
 nvidiaPersistenced = true;
@@ -116,7 +116,6 @@ services.xserver.dpi = 120;
 
 # Power management and CPU throttling
 services.throttled.enable = lib.mkDefault true;
-boot.kernelModules = [ "msr" ];
 
 # System state version
 system.stateVersion = "24.05";
