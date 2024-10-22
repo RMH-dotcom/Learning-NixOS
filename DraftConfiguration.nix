@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }: {
 imports = [
 /hardware configuration.nix
-]:
+];
 # Uncomment to update to the Latest kernel (stable/mainline/longterm)
 # boot kernelPackages = pkgs.linuxPackages_6_11;
 
@@ -19,7 +19,7 @@ networking.networkmanager.enable = true;
 # Time zone and locales
 time.timeZone = "Europe/London";
 i18n.defaultLocale = "en_GB.UTF-8";
-118n.extraLocaleSettings = ( LC_ALL = "en_GB.UTF-8"};
+i18n.extraLocaleSettings = { LC_ALL = "en_GB.UTF-8"; };
 
 # X11 and KDE Plasma
 services.server.enable = true;
@@ -35,7 +35,7 @@ services.printing.enable = true;
 services.pipewire = {
   enable = true;
   alsa = {
-    enable = true:
+    enable = true;
     support32Bit = true;
   };
   pulse.enable = true;
@@ -89,9 +89,10 @@ wireshark
 ];
 
 # Hybrid graphics (Intel + NVIDIA)
-environment.systemPackages = [ nvidia-offload ]; services.xserver.videoDrivers = [ "nvidia" ]: hardware.nvidia = {
+environment.systemPackages = [ nvidia-offload ]; services.xserver.videoDrivers = [ "nvidia" ]; hardware.nvidia = {
 powerManagement = {
   enabled = true;
+  };
 };
 
 # Uses stable NUIDIA drivers
