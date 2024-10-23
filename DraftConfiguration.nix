@@ -22,7 +22,7 @@ i18n.defaultLocale = "en_GB.UTF-8";
 i18n.extraLocaleSettings = { LC_ALL = "en_GB.UTF-8"; };
 
 # X11 and KDE Plasma
-services.server.enable = true;
+services.xserver.enable = true;
 services.displayManager.sddm.enable = true;
 services.desktopManager.plasma6.enable = true;
 services.server.xkb = {
