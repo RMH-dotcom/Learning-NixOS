@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }: {
 imports = [
-./hardware configuration.nix
+./hardware-configuration.nix
 ];
 # Uncomment to update to the Latest kernel (stable/mainline/longterm)
 # boot kernelPackages = pkgs.linuxPackages_6_11;
