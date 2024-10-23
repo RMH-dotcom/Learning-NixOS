@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }: {
 imports = [
-/hardware configuration.nix
+./hardware configuration.nix
 ];
 # Uncomment to update to the Latest kernel (stable/mainline/longterm)
 # boot kernelPackages = pkgs.linuxPackages_6_11;
@@ -68,8 +68,8 @@ hardware.opengl.enable = true;
 # Enable 32-bit support for steam
 hardware.opengl.driSupport32Bit = true;
 
-# Systen-wide packages
-environment.systemPackages = with pkgs: [
+# System-wide packages
+environment.systemPackages = with pkgs; [
 bluetooth_battery
 bluez
 bluez-tools
@@ -89,14 +89,14 @@ wireshark
 ];
 
 # Hybrid graphics (Intel + NVIDIA)
-environment.systemPackages = [ nvidia-offload ]; services.xserver.videoDrivers = [ "nvidia" ]; hardware.nvidia = {
+services.xserver.videoDrivers = [ "nvidia" ];
+hardware.nvidia = {
 powerManagement = {
-  enabled = true;
+  enable = true;
   };
-};
 
-# Uses stable NUIDIA drivers
-package = config.boot.kernelPackages.nvidiaPackages.beta;
+# Uses stable NVIDIA drivers
+package = config.boot.kernelPackages.nvidiaPackages.stable;
 
 # Fixes a glitch
 nvidiaPersistenced = true;
@@ -109,6 +109,7 @@ prime = {
 
   intelBusId = "PCI:0:2:0"; # Intel iGPU Bus ID
   IntelBusID = "PCI:1:0:0"; #NVIDIA dGPU Bus ID
+};
 };
 
 # DPI settings (for 1920x1080)
