@@ -105,7 +105,7 @@ nvidiaPersistenced = true;
 modesetting.enable = true;
 prime = {
   offload.enable = true;
-  sync.enable = true;
+  sync.enable = false;
 
   intelBusId = "PCI:0:2:0"; # Intel iGPU Bus ID
   nvidiaBusID = "PCI:1:0:0"; #NVIDIA dGPU Bus ID
