@@ -25,7 +25,7 @@ i18n.extraLocaleSettings = { LC_ALL = "en_GB.UTF-8"; };
 services.xserver.enable = true;
 services.displayManager.sddm.enable = true;
 services.desktopManager.plasma6.enable = true;
-services.server.xkb = {
+services.xserver.xkb = {
   layout = "gb";
 };
 console.keyMap = "uk";
