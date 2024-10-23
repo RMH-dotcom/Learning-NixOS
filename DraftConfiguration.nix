@@ -108,7 +108,7 @@ prime = {
   sync.enable = true;
 
   intelBusId = "PCI:0:2:0"; # Intel iGPU Bus ID
-  IntelBusID = "PCI:1:0:0"; #NVIDIA dGPU Bus ID
+  nvidiaBusID = "PCI:1:0:0"; #NVIDIA dGPU Bus ID
 };
 };
 
