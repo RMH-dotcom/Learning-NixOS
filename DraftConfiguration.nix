@@ -82,9 +82,9 @@
   services.blueman.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’
-  users.users.nixoslaptopmak = {
+  users.users.mylaptoptitle = {
     isNormalUser = true;
-    description = "Ryan Henry";
+    description = "My Name";
     extraGroups = [ "networkmanager" "wheel" "wireshark" ];
     packages = with pkgs; [
       kdePackages.kate
