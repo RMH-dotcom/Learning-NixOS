@@ -1,124 +1,144 @@
-{ config, lib, pkgs, ... }: {
-imports = [
-./hardware-configuration.nix
-];
-# Uncomment to update to the Latest kernel (stable/mainline/longterm)
-# boot kernelPackages = pkgs.linuxPackages_6_11;
+{ config, pkgs, ... }:
 
-# Whether to enable VirtualBox
-virtualisation.virtualbox.host.enable = true;
+{
+  imports =
+    [
+      ./hardware-configuration.nix
+    ];
 
-# Boot loader
-boot.loader.systemd-boot.enable = true;
-boot.loader.efi.canTouchEfiVariables = true;
+  # Bootloader
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
-# Network and hostname
-networking.hostName = "nixos";
-networking.networkmanager.enable = true;
+  # Network and hostname
+  networking.hostName = "nixos";
+  networking.networkmanager.enable = true;
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-# Time zone and locales
-time.timeZone = "Europe/London";
-i18n.defaultLocale = "en_GB.UTF-8";
-i18n.extraLocaleSettings = { LC_ALL = "en_GB.UTF-8"; };
+  # Configure network proxy if necessary
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-# X11 and KDE Plasma
-services.xserver.enable = true;
-services.displayManager.sddm.enable = true;
-services.desktopManager.plasma6.enable = true;
-services.xserver.xkb = {
-  layout = "gb";
-};
-console.keyMap = "uk";
+  # Time zone and locales
+  time.timeZone = "Europe/London";
 
-# Printing and sound
-services.printing.enable = true;
-services.pipewire = {
-  enable = true;
-  alsa = {
+  # Internationalisation properties
+  i18n.defaultLocale = "en_GB.UTF-8";
+
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "en_GB.UTF-8";
+    LC_IDENTIFICATION = "en_GB.UTF-8";
+    LC_MEASUREMENT = "en_GB.UTF-8";
+    LC_MONETARY = "en_GB.UTF-8";
+    LC_NAME = "en_GB.UTF-8";
+    LC_NUMERIC = "en_GB.UTF-8";
+    LC_PAPER = "en_GB.UTF-8";
+    LC_TELEPHONE = "en_GB.UTF-8";
+    LC_TIME = "en_GB.UTF-8";
+  };
+
+  # X11
+  services.xserver.enable = true;
+
+  # KDE Plasma Desktop Environment
+  services.displayManager.sddm.enable = true;
+  services.desktopManager.plasma6.enable = true;
+
+  # Keymap in X11
+  services.xserver.xkb = {
+    layout = "gb";
+    variant = "";
+  };
+
+  # Console keymap
+  console.keyMap = "uk";
+
+  # Printing
+  services.printing.enable = true;
+
+  # Enable sound with pipewire
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
     enable = true;
-    support32Bit = true;
-  };
-  pulse.enable = true;
-};
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
 
-# Enable Bluetooth
-hardware.bluetooth.enable = true;
-
-# Optional: Enable Blueman for easier Bluetooth management (GUI)
-services.blueman.enable = true;
-
-# Optional: Ensure Bluetooth is powered on at boot
-hardware.bluetooth.powerOnBoot = true;
-
-# User account
-users.users.mylaptopusername = {
-  isNormalUser = true;
-  description = "My Name";
-  extraGroups = [ "wheel" "networkmanager" "wireshark" ];
-};
-# Unfree packages
-nixpkgs.config.allowUnfree = true;
-
-# Enable steam
-programs.steam.enable = true;
-
-# Enable Vulkan and OpenGl support
-hardware.opengl.enable = true;
-
-# Enable 32-bit support for steam
-hardware.opengl.driSupport32Bit = true;
-
-# System-wide packages
-environment.systemPackages = with pkgs; [
-bluetooth_battery
-bluez
-bluez-tools
-firefox
-git
-kdePackages.bluedevil
-kdePackages.bluez-qt
-kdePackages.elisa
-kdePackages.kate
-kdePackages.konsole
-kdePackages.kwalletmanager
-kdePackages.gwenview
-kdePackages.okular
-unzip
-vscode
-wireshark
-];
-
-# Hybrid graphics (Intel + NVIDIA)
-services.xserver.videoDrivers = [ "nvidia" ];
-hardware.nvidia = {
-powerManagement = {
-  enable = true;
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
   };
 
-# Uses stable NVIDIA drivers
-package = config.boot.kernelPackages.nvidiaPackages.stable;
+  # Enable touchpad support (enabled default in most desktopManager)
+  services.libinput.enable = true;
 
-# Fixes a glitch
-nvidiaPersistenced = true;
+  # Enable Bluetooth
+  hardware.bluetooth.enable = true;
 
-# Intel + NVIDIA pairings
-modesetting.enable = true;
-prime = {
-  offload.enable = true;
-  sync.enable = false;
+  # Optional: Enable Blueman for easier Bluetooth management (GUI)
+  services.blueman.enable = true;
 
-  intelBusId = "PCI:0:2:0"; # Intel iGPU Bus ID
-  nvidiaBusID = "PCI:1:0:0"; #NVIDIA dGPU Bus ID
-};
-};
+  # Define a user account. Don't forget to set a password with ‘passwd’
+  users.users.nixoslaptopmak = {
+    isNormalUser = true;
+    description = "Ryan Henry";
+    extraGroups = [ "networkmanager" "wheel" "wireshark" ];
+    packages = with pkgs; [
+      kdePackages.kate
+      vscode
+      wget
+    ];
+  };
 
-# DPI settings (for 1920x1080)
-services.xserver.dpi = 120;
-# services.xserver.displayManager.plasma6.scalingFactor = 1.25;
+  # Install firefox
+  programs.firefox.enable = true;
 
-# Power management and CPU throttling
-services.throttled.enable = lib.mkDefault true;
+  # Install git
+  programs.git.enable = true;
 
-# System state version
-system.stateVersion = "24.05";
+  # Install steam
+  programs.steam.enable = true;
+
+  # Enable Vulkan, OpenGl and 32-bit support for steam.
+  hardware.opengl = {
+    enable = true;
+    driSupport32Bit = true;
+  };
+
+  # Hybrid graphics (Intel + NVIDIA)
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia = {
+    powerManagement.enable = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    nvidiaPersistenced = true;
+
+    prime = {
+      offload.enable = true;
+      intelBusId = "PCI:0:2:0"; # Intel iGPU Bus ID
+      nvidiaBusId = "PCI:1:0:0"; # NVIDIA dGPU Bus ID
+    };
+  };
+
+  # PRIME offloading for Intel + NVIDIA hybrid setup
+
+  # Enable fix for Intel CPU throttling
+  services.throttled.enable = true;
+
+  #Install waybar
+  programs.waybar.enable = true;
+
+  # Install wireshark
+  programs.wireshark.enable = true;
+
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
+  environment.systemPackages = with pkgs; [
+  ];
+  system.stateVersion = "24.05";
+
 }
