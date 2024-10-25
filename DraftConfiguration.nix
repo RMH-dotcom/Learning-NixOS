@@ -106,6 +106,8 @@
   hardware.opengl = {
     enable = true;
     driSupport32Bit = true;
+    extraPackages = with pkgs; [ vulkan-loader vulkan-tools-lunarg ];  # Adds Vulkan tools for testing
+    extraPackages32 = with pkgs.pkgsCross.musl32; [ vulkan-loader ]; # Ensures 32-bit Vulkan support
   };
 
   # Hybrid graphics (Intel + NVIDIA)
@@ -122,8 +124,6 @@
       nvidiaBusId = "PCI:1:0:0"; # NVIDIA dGPU Bus ID
     };
   };
-
-  # PRIME offloading for Intel + NVIDIA hybrid setup
 
   # Enable fix for Intel CPU throttling
   services.throttled.enable = true;
