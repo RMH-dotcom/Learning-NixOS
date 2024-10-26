@@ -9,6 +9,8 @@
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.initrd.kernelModules = [ "nvidia" ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
 
   # Network and hostname
   networking.hostName = "nixos";
@@ -105,21 +107,26 @@
   # Enable Vulkan, OpenGl and 32-bit support for steam.
   hardware.opengl = {
     enable = true;
+    driSupport = true;
     driSupport32Bit = true;
     extraPackages = with pkgs; [ vulkan-loader vulkan-tools-lunarg ];  # Adds Vulkan tools for testing
     extraPackages32 = with pkgs.pkgsCross.musl32; [ vulkan-loader ]; # Ensures 32-bit Vulkan support
   };
 
   # Hybrid graphics (Intel + NVIDIA)
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia"];
 
   hardware.nvidia = {
+    modesetting.enable = true;
     powerManagement.enable = true;
+    powerManagement.finegrained = false;
+    open = false;
+    nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
     nvidiaPersistenced = true;
 
     prime = {
-      offload.enable = true;
+      sync.enable = true;
       intelBusId = "PCI:0:2:0"; # Intel iGPU Bus ID
       nvidiaBusId = "PCI:1:0:0"; # NVIDIA dGPU Bus ID
     };
@@ -127,6 +134,12 @@
 
   # Enable fix for Intel CPU throttling
   services.throttled.enable = true;
+
+  # Add missing firmware files
+  # hardware.firmware = [ pkgs.linux-firmware ];
+
+  # Enable ALL firmware regardless of license
+  hardware.enableAllFirmware = true;
 
   #Install waybar
   programs.waybar.enable = true;
