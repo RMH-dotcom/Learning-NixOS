@@ -12,6 +12,10 @@
   boot.initrd.kernelModules = [ "nvidia" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
 
+  # Enable NixOS automatic updates
+  system.autoUpgrade.enable = true;
+  system.autoUpgrade.allowReboot = true;
+
   # Network and hostname
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
@@ -110,13 +114,13 @@
     driSupport = true;
     driSupport32Bit = true;
     extraPackages = with pkgs; [
-      intel-media-driver # Optimized Intel driver for UHD graphics
-      vulkan-loader # Vulkan loader for 64-bit support
+      intel-media-driver  # Optimized Intel driver for UHD graphics
+      vulkan-loader       # Vulkan loader for 64-bit support
       vulkan-tools-lunarg # Tools like vulkaninfo for testing and diagnostics
     ];
     extraPackages32 = with pkgs.pkgsCross.musl32; [
-      vulkan-loader # 32-bit Vulkan loader for compatibility with Steam games
-      libva # Ensures 32-bit VA-API support for video acceleration
+      vulkan-loader       # 32-bit Vulkan loader for compatibility with Steam games
+      libva               # Ensures 32-bit VA-API support for video acceleration
     ];
   };
 
@@ -134,7 +138,7 @@
 
     prime = {
       sync.enable = true;
-      intelBusId = "PCI:0:2:0"; # Intel iGPU Bus ID
+      intelBusId = "PCI:0:2:0";  # Intel iGPU Bus ID
       nvidiaBusId = "PCI:1:0:0"; # NVIDIA dGPU Bus ID
     };
   };
