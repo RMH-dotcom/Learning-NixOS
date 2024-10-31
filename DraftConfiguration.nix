@@ -81,7 +81,7 @@
   hardware.bluetooth.enable = true;
 
   # Optional: Enable Blueman for easier Bluetooth management (GUI)
-  services.blueman.enable = true;
+  # services.blueman.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’
   users.users.mylaptoptitle = {
@@ -109,12 +109,19 @@
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
-    extraPackages = with pkgs; [ vulkan-loader vulkan-tools-lunarg ];  # Adds Vulkan tools for testing
-    extraPackages32 = with pkgs.pkgsCross.musl32; [ vulkan-loader ]; # Ensures 32-bit Vulkan support
+    extraPackages = with pkgs; [
+      intel-media-driver # Optimized Intel driver for UHD graphics
+      vulkan-loader # Vulkan loader for 64-bit support
+      vulkan-tools-lunarg # Tools like vulkaninfo for testing and diagnostics
+    ];
+    extraPackages32 = with pkgs.pkgsCross.musl32; [
+      vulkan-loader # 32-bit Vulkan loader for compatibility with Steam games
+      libva # Ensures 32-bit VA-API support for video acceleration
+    ];
   };
 
   # Hybrid graphics (Intel + NVIDIA)
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
 
   hardware.nvidia = {
     modesetting.enable = true;
