@@ -81,6 +81,9 @@
   # Enable touchpad support (enabled default in most desktopManager)
   services.libinput.enable = true;
 
+  # Enable multi-touch gesture
+  services.touchegg.enable = true;
+
   # Enable Bluetooth
   hardware.bluetooth.enable = true;
 
@@ -95,8 +98,11 @@
     packages = with pkgs; [
       kdePackages.kate
       mullvad-vpn
+      touchegg
       vscode
+      waybar
       wget
+      wireshark
     ];
   };
 
