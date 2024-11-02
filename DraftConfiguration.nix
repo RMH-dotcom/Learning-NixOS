@@ -94,6 +94,7 @@
     extraGroups = [ "networkmanager" "wheel" "wireshark" ];
     packages = with pkgs; [
       kdePackages.kate
+      mullvad-vpn
       vscode
       wget
     ];
@@ -104,6 +105,9 @@
 
   # Install git
   programs.git.enable = true;
+
+  # Install mullvad
+  services.mullvad-vpn.enable = true;
 
   # Install steam
   programs.steam.enable = true;
