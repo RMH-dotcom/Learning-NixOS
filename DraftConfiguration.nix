@@ -100,7 +100,6 @@
       mullvad-vpn
       touchegg
       vscode
-      waybar
       wget
       wireshark
     ];
@@ -161,9 +160,6 @@
 
   # Enable ALL firmware regardless of license
   hardware.enableAllFirmware = true;
-
-  #Install waybar
-  programs.waybar.enable = true;
 
   # Install wireshark
   programs.wireshark.enable = true;
