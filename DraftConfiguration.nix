@@ -81,9 +81,6 @@
   # Enable touchpad support (enabled default in most desktopManager)
   services.libinput.enable = true;
 
-  # Enable multi-touch gesture
-  services.touchegg.enable = true;
-
   # Enable Bluetooth
   hardware.bluetooth.enable = true;
 
@@ -102,6 +99,8 @@
       vscode
       wget
       wireshark
+      xbindkeys
+      xbindkeys-config
     ];
   };
 
@@ -166,6 +165,11 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # OpenSSH Security
+  services.openssh.enable = true;
+  services.openssh.settings.PermitRootLogin = "prohibit-password"; # Disable root login
+  services.openssh.settings.PasswordAuthentication = false;        # Disable password authentication, use SSH keys instead
 
   environment.systemPackages = with pkgs; [
   ];
