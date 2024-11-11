@@ -49,12 +49,19 @@
     LC_TIME = "en_GB.UTF-8";
   };
 
-  # X11
-  services.xserver.enable = true;
-
   # KDE Plasma Desktop Environment
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
+
+  # GNOME Desktop Environment, GDM, and all things GNOME
+  services.xserver.displayManager.gdm.enable = true;    # Enable Wayland for GNOME
+  services.xserver.desktopManager.gnome.enable = true;
+  services.gnome.gnome-browser-connector.enable = true; # Manages GNOME extensions from the browser
+  services.gnome.tracker-miners.enable = true;
+  services.gnome.gnome-initial-setup.enable = true;
+
+  # Enable the X11 windowing system
+  services.xserver.enable = true;
 
   # Keymap in X11
   services.xserver.xkb = {
@@ -99,14 +106,19 @@
     description = "My Name";
     extraGroups = [ "networkmanager" "wheel" "wireshark" ];
     packages = with pkgs; [
-      kdePackages.kate
+      clang
+      gcc
+      ghc
+      go
+      jdk22
       mullvad-vpn
-      touchegg
+      nodejs_22
+      python311Full
+      python311Packages.pip
+      rustup
       vscode
       wget
       wireshark
-      xbindkeys
-      xbindkeys-config
     ];
   };
 
