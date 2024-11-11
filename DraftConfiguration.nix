@@ -16,6 +16,12 @@
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = true;
 
+  # Enable NixOS automatic garbage collection
+  nix.gc = {
+    automatic = true;
+    dates = "weekly"; # Set the interval for garbage collection
+  };
+
   # Network and hostname
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
