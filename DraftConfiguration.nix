@@ -53,13 +53,6 @@
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
-  # GNOME Desktop Environment, GDM, and all things GNOME
-  services.xserver.displayManager.gdm.enable = true;    # Enable Wayland for GNOME
-  services.xserver.desktopManager.gnome.enable = true;
-  services.gnome.gnome-browser-connector.enable = true; # Manages GNOME extensions from the browser
-  services.gnome.tracker-miners.enable = true;
-  services.gnome.gnome-initial-setup.enable = true;
-
   # Enable the X11 windowing system
   services.xserver.enable = true;
 
@@ -107,20 +100,44 @@
     extraGroups = [ "networkmanager" "wheel" "wireshark" ];
     packages = with pkgs; [
       clang
+      cni-plugins
+      docker-compose
+      direnv
+      dpkg
       gcc
       ghc
       go
+      htop
+      iotop
+      iptables
       jdk22
+      kdePackages.systemsettings
+      kubernetes
+      kubernetes-helm
       mullvad-vpn
       nodejs_22
+      nvidia-docker
+      openai
       python311Full
+      python311Packages.jupyterlab
+      python311Packages.matplotlib
+      python311Packages.numpy
+      python311Packages.pandas
       python311Packages.pip
+      python311Packages.pytorch-lightning
+      quantlib
       rustup
+      tgpt
+      thinkfan
+      tmux
       vscode
       wget
       wireshark
     ];
   };
+
+  # Enable docker
+  virtualisation.docker.enable = true;
 
   # Install firefox
   programs.firefox.enable = true;
@@ -178,7 +195,7 @@
   # Enable ALL firmware regardless of license
   hardware.enableAllFirmware = true;
 
-  # Install wireshark
+  # Enable wireshark
   programs.wireshark.enable = true;
 
   # Allow unfree packages
