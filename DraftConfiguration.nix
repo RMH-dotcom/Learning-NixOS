@@ -52,9 +52,7 @@
   # KDE Plasma Desktop Environment
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
-
-  # Enable the X11 windowing system
-  services.xserver.enable = true;
+  services.xserver.enable = true;                # Enable the X11 windowing system
 
   # Keymap in X11
   services.xserver.xkb = {
@@ -101,9 +99,13 @@
     packages = with pkgs; [
       clang
       cni-plugins
-      docker-compose
       direnv
+      docker
+      docker-compose
+      dolphin-emu
       dpkg
+      dxvk
+      gamemode
       gcc
       ghc
       go
@@ -112,13 +114,16 @@
       iptables
       jdk22
       kdePackages.systemsettings
+      kdePackages.sddm-kcm
       kubernetes
       kubernetes-helm
       mullvad-vpn
       nodejs_22
       nvidia-docker
+      nvidia-system-monitor-qt
       openai
       python311Full
+      python311Packages.alpha-vantage
       python311Packages.jupyterlab
       python311Packages.matplotlib
       python311Packages.numpy
@@ -132,23 +137,21 @@
       tmux
       vscode
       wget
+      wine
+      winetricks
+      wineWowPackages.stable
       wireshark
     ];
   };
 
-  # Enable docker
+# All things docker
   virtualisation.docker.enable = true;
+  hardware.nvidia-container-toolkit.enable = true;
 
-  # Install firefox
+  # Enable browsers, git, mullvad, and steam
   programs.firefox.enable = true;
-
-  # Install git
   programs.git.enable = true;
-
-  # Install mullvad
   services.mullvad-vpn.enable = true;
-
-  # Install steam
   programs.steam.enable = true;
 
   # Enable Vulkan, OpenGl and 32-bit support for steam.
