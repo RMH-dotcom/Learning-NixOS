@@ -113,8 +113,9 @@
       iotop
       iptables
       jdk22
-      kdePackages.systemsettings
+      kdePackages.sddm
       kdePackages.sddm-kcm
+      kdePackages.systemsettings
       kubernetes
       kubernetes-helm
       mullvad-vpn
