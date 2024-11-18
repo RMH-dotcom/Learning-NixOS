@@ -95,7 +95,7 @@
   users.users.mylaptoptitle = {
     isNormalUser = true;
     description = "My Name";
-    extraGroups = [ "networkmanager" "wheel" "wireshark" ];
+    extraGroups = [ "docker" "networkmanager" "wheel" "wireshark" ];
     packages = with pkgs; [
       clang
       cni-plugins
@@ -161,9 +161,11 @@
     driSupport = true;
     driSupport32Bit = true;
     extraPackages = with pkgs; [
+      clinfo
+      glxinfo
       intel-media-driver  # Optimized Intel driver for UHD graphics
       vulkan-loader       # Vulkan loader for 64-bit support
-      vulkan-tools-lunarg # Tools like vulkaninfo for testing and diagnostics
+      vulkan-tools # Tools like vulkaninfo for testing and diagnostics
     ];
     extraPackages32 = with pkgs.pkgsCross.musl32; [
       vulkan-loader       # 32-bit Vulkan loader for compatibility with Steam games
