@@ -134,7 +134,6 @@
       quantlib
       rustup
       tgpt
-      thinkfan
       tmux
       vscode
       wget
@@ -145,7 +144,7 @@
     ];
   };
 
-# All things docker
+  # All things docker
   virtualisation.docker.enable = true;
   hardware.nvidia-container-toolkit.enable = true;
 
