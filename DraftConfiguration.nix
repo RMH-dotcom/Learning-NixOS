@@ -145,7 +145,13 @@
   };
 
   # All things docker
-  virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
   hardware.nvidia-container-toolkit.enable = true;
 
   # Enable browsers, git, mullvad, and steam
