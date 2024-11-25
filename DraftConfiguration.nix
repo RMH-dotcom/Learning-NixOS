@@ -107,6 +107,7 @@
       docker-compose
       dolphin-emu
       dpkg
+      evdevremapkeys
       eww
       gamemode
       gcc
@@ -147,6 +148,12 @@
       wineWowPackages.stable
       wireshark
     ];
+  };
+
+# 8bitdo Pro 2 button mapping
+  services.evdevremapkeys = {
+    enable = true;
+    settings = { };
   };
 
   # All things docker
