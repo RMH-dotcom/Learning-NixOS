@@ -130,12 +130,16 @@
       nvidia-system-monitor-qt
       python311Full
       python311Packages.alpha-vantage
+      python311Packages.evdev
       python311Packages.jupyterlab
       python311Packages.matplotlib
       python311Packages.numpy
       python311Packages.pandas
       python311Packages.pip
+      python311Packages.pyaml
+      python311Packages.python-daemon
       python311Packages.pytorch-lightning
+      python311Packages.pyxdg
       quantlib
       rapidjson
       rustup
@@ -153,7 +157,33 @@
 # 8bitdo Pro 2 button mapping
   services.evdevremapkeys = {
     enable = true;
-    settings = { };
+    settings = {
+      devices = [
+        {
+          name = "8BitDo Pro 2";
+          evdev = "/dev/input/event19"; # Found by running 'evtest'
+          remaps = {
+            BTN_Z = "BTN_A";         # Map BTN_Z to A button
+            BTN_TL = "BTN_L1";       # Map left shoulder to L1
+            BTN_TR = "BTN_R1";       # Map right shoulder to R1
+            BTN_TL2 = "BTN_L2";      # Map left trigger to L2
+            BTN_TR2 = "BTN_R2";      # Map right trigger to R2
+            BTN_SELECT = "BTN_BACK"; # Map Select to Back button
+            BTN_START = "BTN_START"; # Keep Start button as is
+            BTN_THUMBL = "BTN_THUMBL";
+            BTN_THUMBR = "BTN_THUMBR";
+          };
+          axes = {
+            ABS_X = "LEFT_X";         # Map left stick horizontal
+            ABS_Y = "LEFT_Y";         # Map left stick vertical
+            ABS_Z = "RIGHT_TRIGGER";  # Map Z to the right trigger
+            ABS_RZ = "LEFT_TRIGGER";  # Map RZ to the left trigger
+            ABS_HAT0X = "DPAD_X";     # Map D-pad horizontal
+            ABS_HAT0Y = "DPAD_Y";     # Map D-pad vertical
+          };
+        }
+      ];
+    };
   };
 
   # All things docker
