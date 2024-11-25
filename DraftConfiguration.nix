@@ -20,6 +20,7 @@
   nix.gc = {
     automatic = true;
     dates = "weekly"; # Set the interval for garbage collection
+    options = "--delete-older-than 7d";
   };
 
   # Network and hostname
@@ -95,8 +96,10 @@
   users.users.mylaptoptitle = {
     isNormalUser = true;
     description = "My Name";
-    extraGroups = [ "docker" "networkmanager" "wheel" "wireshark" ];
+    extraGroups = [ "docker" "input" "networkmanager" "wheel" "wireshark" ];
     packages = with pkgs; [
+      autoAddDriverRunpath
+      autoFixElfFiles
       clang
       cni-plugins
       direnv
@@ -104,7 +107,7 @@
       docker-compose
       dolphin-emu
       dpkg
-      dxvk
+      eww
       gamemode
       gcc
       ghc
@@ -113,16 +116,17 @@
       iotop
       iptables
       jdk22
-      kdePackages.sddm
-      kdePackages.sddm-kcm
-      kdePackages.systemsettings
       kubernetes
       kubernetes-helm
+      lxd-lts
+      lxd-unwrapped-lts
       mullvad-vpn
+      nixfmt-classic
+      nixfmt-rfc-style
       nodejs_22
       nvidia-docker
+      nvtopPackages.full
       nvidia-system-monitor-qt
-      openai
       python311Full
       python311Packages.alpha-vantage
       python311Packages.jupyterlab
@@ -132,6 +136,7 @@
       python311Packages.pip
       python311Packages.pytorch-lightning
       quantlib
+      rapidjson
       rustup
       tgpt
       tmux
@@ -167,6 +172,7 @@
     driSupport32Bit = true;
     extraPackages = with pkgs; [
       clinfo
+      dxvk
       glxinfo
       intel-media-driver  # Optimized Intel driver for UHD graphics
       vulkan-loader       # Vulkan loader for 64-bit support
@@ -213,11 +219,23 @@
   nixpkgs.config.allowUnfree = true;
 
   # OpenSSH Security
-  services.openssh.enable = true;
-  services.openssh.settings.PermitRootLogin = "prohibit-password"; # Disable root login
-  services.openssh.settings.PasswordAuthentication = false;        # Disable password authentication, use SSH keys instead
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "prohibit-password"; # Disable root login
+      PasswordAuthentication = false;        # Disable password authentication, use SSH keys instead
+    };
+  };
 
   environment.systemPackages = with pkgs; [
+    kdePackages.kirigami
+    kdePackages.ksvg
+    kdePackages.plasma5support
+    kdePackages.qt5compat
+    kdePackages.sddm
+    kdePackages.sddm-kcm
+    kdePackages.systemsettings
+    libsForQt5.qt5.qtgraphicaleffects
   ];
   system.stateVersion = "24.05";
 
