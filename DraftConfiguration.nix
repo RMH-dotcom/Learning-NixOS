@@ -12,6 +12,9 @@
   boot.initrd.kernelModules = [ "nvidia" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
 
+  # Latest kernel version
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   # Enable NixOS automatic updates
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = true;
