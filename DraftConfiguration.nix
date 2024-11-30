@@ -146,6 +146,7 @@
       rapidjson
       rustup
       tgpt
+      thinkfan
       tmux
       vscode
       wget
@@ -153,6 +154,23 @@
       winetricks
       wineWowPackages.stable
       wireshark
+    ];
+  };
+
+# Thinkfan
+  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "battery" "thinkpad_acpi"];
+
+  services.thinkfan = {
+    enable = true;
+    levels = [
+      [ 0 0 45 ]       # Fan off if temperature <= 43°C
+      [ 1 35 48 ]      # Level 1: 35°C <= temp < 45°C
+      [ 2 38 53 ]      # Level 2: 38°C <= temp < 48°C
+      [ 3 42 58 ]      # Level 3: 42°C <= temp < 53°C
+      [ 4 45 62 ]      # Level 4: 45°C <= temp < 58°C
+      [ 5 48 65 ]      # Level 5: 48°C <= temp < 62°C
+      [ 6 51 68 ]      # Level 6: 51°C <= temp < 65°C
+      [ 7 54 70 ]      # Level 7: 54°C <= temp < 68°C
     ];
   };
 
