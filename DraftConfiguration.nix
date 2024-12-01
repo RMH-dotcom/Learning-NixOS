@@ -146,7 +146,6 @@
       rapidjson
       rustup
       tgpt
-      thinkfan
       tmux
       vscode
       wget
@@ -157,21 +156,20 @@
     ];
   };
 
-# Thinkfan
-  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "battery" "thinkpad_acpi"];
-
-  services.thinkfan = {
+ # NixOS fan control
+  hardware.fancontrol = {
     enable = true;
-    levels = [
-      [ 0 0 45 ]       # Fan off if temperature <= 43°C
-      [ 1 35 48 ]      # Level 1: 35°C <= temp < 45°C
-      [ 2 38 53 ]      # Level 2: 38°C <= temp < 48°C
-      [ 3 42 58 ]      # Level 3: 42°C <= temp < 53°C
-      [ 4 45 62 ]      # Level 4: 45°C <= temp < 58°C
-      [ 5 48 65 ]      # Level 5: 48°C <= temp < 62°C
-      [ 6 51 68 ]      # Level 6: 51°C <= temp < 65°C
-      [ 7 54 70 ]      # Level 7: 54°C <= temp < 68°C
-    ];
+    config = ''
+      INTERVAL=10
+      DEVPATH=hwmon3=devices/virtual/thermal/thermal_zone2 hwmon4=devices/platform/f71882fg.656
+      DEVNAME=hwmon3=soc_dts1 hwmon4=f71869a
+      FCTEMPS=hwmon4/device/pwm1=hwmon3/temp1_input
+      FCFANS=hwmon4/device/pwm1=hwmon4/device/fan1_input
+      MINTEMP=hwmon4/device/pwm1=35
+      MAXTEMP=hwmon4/device/pwm1=65
+      MINSTART=hwmon4/device/pwm1=150
+      MINSTOP=hwmon4/device/pwm1=0
+    '';
   };
 
   # All things docker
