@@ -6,23 +6,19 @@
       ./hardware-configuration.nix
     ];
 
-  # Bootloader
+  ## Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.kernelModules = [ "nvidia" ];
-  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
 
-  # Latest kernel version
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  # Enable NixOS automatic updates
-  system.autoUpgrade.enable = true;
-  system.autoUpgrade.allowReboot = true;
-
-  # Enable NixOS automatic garbage collection
+  # Enable NixOS automatic updates and garbage collection
+  system.autoUpgrade = {
+    enable = true;
+    allowReboot = true;
+  };
   nix.gc = {
     automatic = true;
-    dates = "weekly"; # Set the interval for garbage collection
+    dates = "weekly";                   # Set the interval for garbage collection
     options = "--delete-older-than 7d";
   };
 
@@ -54,7 +50,10 @@
   };
 
   # KDE Plasma Desktop Environment
-  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;                       # Enable experimental Wayland support
+  };
   services.desktopManager.plasma6.enable = true;
   services.xserver.enable = true;                # Enable the X11 windowing system
 
@@ -119,7 +118,7 @@
       htop
       iotop
       iptables
-      jdk22
+      jdk23
       kubernetes
       kubernetes-helm
       lxd-lts
@@ -189,21 +188,17 @@
   programs.steam.enable = true;
 
   # Enable Vulkan, OpenGl and 32-bit support for steam.
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-    extraPackages = with pkgs; [
+  hardware.graphics = {
+    enable32Bit = true;
+    extraPackages32 = with pkgs.pkgsCross.musl32; [
       clinfo
       dxvk
       glxinfo
       intel-media-driver  # Optimized Intel driver for UHD graphics
-      vulkan-loader       # Vulkan loader for 64-bit support
-      vulkan-tools # Tools like vulkaninfo for testing and diagnostics
-    ];
-    extraPackages32 = with pkgs.pkgsCross.musl32; [
-      vulkan-loader       # 32-bit Vulkan loader for compatibility with Steam games
+      intel-vaapi-driver  # Provides a bridge to Intel GEN GPUs 
       libva               # Ensures 32-bit VA-API support for video acceleration
+      vulkan-loader       # 32-bit Vulkan loader for compatibility with Steam games
+      vulkan-tools        # Tools like vulkaninfo for testing and diagnostics
     ];
   };
 
@@ -220,6 +215,10 @@
     nvidiaPersistenced = true;
 
     prime = {
+      # offload = {
+        # enable = true;
+        # enableOffloadCmd = true;
+      # };
       sync.enable = true;
       intelBusId = "PCI:0:2:0";  # Intel iGPU Bus ID
       nvidiaBusId = "PCI:1:0:0"; # NVIDIA dGPU Bus ID
@@ -260,6 +259,6 @@
     kdePackages.systemsettings
     libsForQt5.qt5.qtgraphicaleffects
   ];
-  system.stateVersion = "24.05";
+  system.stateVersion = "24.11";
 
 }
