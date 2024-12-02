@@ -189,16 +189,11 @@
 
   # Enable Vulkan, OpenGl and 32-bit support for steam.
   hardware.graphics = {
+    enable = true;
     enable32Bit = true;
+    extraPackages = with pkgs.pkgsCross.musl32; [
+    ];
     extraPackages32 = with pkgs.pkgsCross.musl32; [
-      clinfo
-      dxvk
-      glxinfo
-      intel-media-driver  # Optimized Intel driver for UHD graphics
-      intel-vaapi-driver  # Provides a bridge to Intel GEN GPUs 
-      libva               # Ensures 32-bit VA-API support for video acceleration
-      vulkan-loader       # 32-bit Vulkan loader for compatibility with Steam games
-      vulkan-tools        # Tools like vulkaninfo for testing and diagnostics
     ];
   };
 
