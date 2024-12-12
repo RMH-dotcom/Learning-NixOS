@@ -105,13 +105,11 @@
     };
   };
 
-  # Enable browsers, git, mullvad, and steam
+  # Enable browsers, git, mullvad, steam, and wireshark
   programs.firefox.enable = true;
   programs.git.enable = true;
   services.mullvad-vpn.enable = true;
   programs.steam.enable = true;
-
-  # Enable wireshark
   programs.wireshark.enable = true;
 
   # Enable ALL firmware regardless of license
