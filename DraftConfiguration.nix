@@ -89,6 +89,8 @@
       dolphin-emu
       gcc
       gdb
+      jetbrains.clion
+      jetbrains.datagrip
       mullvad-vpn
       tgpt
       vscode
