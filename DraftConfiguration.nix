@@ -87,16 +87,29 @@
       docker
       docker-compose
       dolphin-emu
+      dpkg
       gcc
       gdb
+      jetbrains-mono
       jetbrains.clion
       jetbrains.datagrip
+      jetbrains.pycharm-professional
       mullvad-vpn
+      obsidian
+      python312Full
+      python312Packages.pipx
       tgpt
-      vscode
+      # virtualbox
       wireshark
+      xorg.xhost
     ];
   };
+
+  # Virtual Machine
+  # virtualisation.virtualbox.host = {
+    # enable = true; 
+    # enableExtensionPack = true;
+  # };
 
   # All things docker
   virtualisation.docker = {
