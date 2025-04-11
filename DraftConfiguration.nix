@@ -13,8 +13,8 @@
 
   # Enable NixOS automatic updates and garbage collection
   system.autoUpgrade = {
-    enable = true;
-    allowReboot = true;
+    enable = false;
+    allowReboot = false;
   };
   nix.gc = {
     automatic = true;
@@ -88,20 +88,29 @@
       docker-compose
       dolphin-emu
       dpkg
+      fwupd
       gcc
       gdb
+      git
       jetbrains-mono
       jetbrains.clion
-      jetbrains.datagrip
       jetbrains.pycharm-professional
+      libreoffice
       mullvad-vpn
-      obsidian
+      osu-lazer-bin
       python312Full
-      python312Packages.pipx
+      python312Packages.jupyterlab
+      python312Packages.matplotlib
+      python312Packages.matplotlib-inline
+      python312Packages.numpy
+      python312Packages.pandas
+      python312Packages.scikit-learn
+      spotify
       tgpt
       # virtualbox
       wireshark
       xorg.xhost
+
     ];
   };
 
@@ -127,8 +136,9 @@
   programs.steam.enable = true;
   programs.wireshark.enable = true;
 
-  # Enable ALL firmware regardless of license
+  # All things Firmware
   hardware.enableAllFirmware = true;
+  services.fwupd.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
