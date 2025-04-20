@@ -48,15 +48,13 @@
   # KDE Plasma Desktop Environment
   services.displayManager.sddm = {
     enable = true;
-  #   package = pkgs.lib.mkForce pkgs.libsForQt5.sddm;
-  #   extraPackages = pkgs.lib.mkForce [ pkgs.libsForQt5.qt5.qtgraphicaleffects ];
-  #  theme = "corners";
+  #  package = pkgs.kdePackages.sddm;
+    theme = "catppuccin-mocha";
   };
   services.desktopManager.plasma6 = {
     enable = true;
-    enableQt5Integration = true;
   };
-  services.xserver.enable = true;                # Enable the X11 windowing system
+  services.xserver.enable = true;       # Enable the X11 windowing system
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -193,12 +191,14 @@
   };
 
   environment.systemPackages = with pkgs; [
-    catppuccin-sddm
-    kdePackages.sddm-kcm
-    sddm-astronaut
-    sddm-chili-theme
-    where-is-my-sddm-theme
-  ];
+    jetbrains-mono
+  (
+    pkgs.catppuccin-sddm.override {
+      background = "${/home/nixoslaptopmak/Pictures/berserk01.webp}";
+      font = "jetbrains-mono";
+      fontSize = "12";
+    }
+  )];
 
   system.stateVersion = "24.11"; # Did you read the comment?
 }
