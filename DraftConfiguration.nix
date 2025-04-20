@@ -46,8 +46,16 @@
   };
 
   # KDE Plasma Desktop Environment
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  services.displayManager.sddm = {
+    enable = true;
+  #   package = pkgs.lib.mkForce pkgs.libsForQt5.sddm;
+  #   extraPackages = pkgs.lib.mkForce [ pkgs.libsForQt5.qt5.qtgraphicaleffects ];
+  #  theme = "corners";
+  };
+  services.desktopManager.plasma6 = {
+    enable = true;
+    enableQt5Integration = true;
+  };
   services.xserver.enable = true;                # Enable the X11 windowing system
 
   # Configure keymap in X11
@@ -185,6 +193,11 @@
   };
 
   environment.systemPackages = with pkgs; [
+    catppuccin-sddm
+    kdePackages.sddm-kcm
+    sddm-astronaut
+    sddm-chili-theme
+    where-is-my-sddm-theme
   ];
 
   system.stateVersion = "24.11"; # Did you read the comment?
