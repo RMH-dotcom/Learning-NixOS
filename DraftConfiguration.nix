@@ -88,7 +88,7 @@
   users.users.myusername = {
     isNormalUser = true;
     description = "My Username";
-    extraGroups = [ "docker" "input" "networkmanager" "wheel" "wireshark" ];
+    extraGroups = [ "docker" "input" "kvm" "libvirtd" "networkmanager" "wheel" "wireshark" ];
     packages = with pkgs; [
       docker
       docker-compose
