@@ -101,7 +101,11 @@
       jetbrains-mono
       jetbrains.clion
       jetbrains.pycharm-professional
+      jdk23
+      koboldcpp
+      libguestfs                          # For virtualisation
       libreoffice
+      mono
       mullvad-vpn
       osu-lazer-bin
       python312Full
@@ -111,20 +115,21 @@
       python312Packages.numpy
       python312Packages.pandas
       python312Packages.scikit-learn
+      qemu_kvm                            # For virtualisation
+      quickemu                            # For virtualisation
+      spice-gtk                           # For virtualisation
       spotify
       tgpt
-      # virtualbox
+      # virtualbox                        # For virtualisation
+      virt-manager                        # For virtualisation
+      virt-viewer                         # For virtualisation
+      winetricks
+      wineWowPackages.full
+      wineWowPackages.waylandFull
       wireshark
       xorg.xhost
-
     ];
   };
-
-  # Virtual Machine
-  # virtualisation.virtualbox.host = {
-    # enable = true; 
-    # enableExtensionPack = true;
-  # };
 
   # All things docker
   virtualisation.docker = {
@@ -135,12 +140,24 @@
     };
   };
 
-  # Enable browsers, git, mullvad, steam, and wireshark
-  programs.firefox.enable = true;
-  programs.git.enable = true;
-  services.mullvad-vpn.enable = true;
-  programs.steam.enable = true;
-  programs.wireshark.enable = true;
+  # Enable programs, services and virtualisation software
+  programs = {
+    firefox.enable = true;
+    git.enable = true;
+    steam.enable = true;
+    wireshark.enable = true;
+  };
+  services = {
+    mullvad-vpn.enable = true;
+  };
+  virtualisation = {
+    libvirtd = {
+      enable = true;
+      qemu = {
+      package = pkgs.qemu_kvm;
+      };
+    };
+  };
 
   # All things Firmware
   hardware.enableAllFirmware = true;
@@ -157,11 +174,23 @@
     enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
+      clblast
       dxvk
+      libdrm
+      libGL
+      libva
+      libva-utils
+      libvdpau
+      libvdpau-va-gl
+      mesa
       vkd3d-proton
       vulkan-extension-layer
+      vulkan-headers
       vulkan-loader
+      vulkan-memory-allocator
+      vulkan-tools
       vulkan-tools-lunarg
+      vulkan-volk
     ];
     extraPackages32 = with pkgs.pkgsCross.musl32; [
       dxvk
@@ -194,7 +223,7 @@
     jetbrains-mono
   (
     pkgs.catppuccin-sddm.override {
-      background = "${/home/nixoslaptopmak/Pictures/berserk01.webp}";
+      background = "${/home/nixoslaptopmak/Pictures/warframerhino02.png}";
       font = "jetbrains-mono";
       fontSize = "12";
     }
