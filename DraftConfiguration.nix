@@ -163,7 +163,7 @@
   hardware.enableAllFirmware = true;
   services.fwupd.enable = true;
 
-  # Allow unfree packages
+  # Allow unfree packages Hardware acceleration (CUDA)
   nixpkgs.config = {
     allowUnfree = true;
     cudaSupport = true;              # Enable CUDA functionality
