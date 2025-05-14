@@ -164,10 +164,15 @@
   services.fwupd.enable = true;
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    cudaSupport = true;              # Enable CUDA functionality
+    cudaCapabilities = [ "sm_75" ];  # GPU architecture for Quadro T1000
+  };
 
   # NixOS-NVIDIA configuration guide at: https://nixos.wiki/wiki/Nvidia
   # Prime offload executable script at: $HOME/.local/bin/nvidia-offload
+  # GPU architecture code list at: https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-v>
 
   # Enable Vulkan, OpenGL and 32-bit support for steam
   hardware.graphics = {
