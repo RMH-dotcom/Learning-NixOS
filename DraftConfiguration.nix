@@ -102,8 +102,10 @@
       jetbrains.clion
       jetbrains.pycharm-professional
       jdk23
-      koboldcpp
-      libguestfs                          # For virtualisation
+      (
+        koboldcpp.override { config.cudaSupport = true; }
+      )
+      libguestfs                                          # For virtualisation
       libreoffice
       mono
       mullvad-vpn
@@ -115,14 +117,14 @@
       python312Packages.numpy
       python312Packages.pandas
       python312Packages.scikit-learn
-      qemu_kvm                            # For virtualisation
-      quickemu                            # For virtualisation
-      spice-gtk                           # For virtualisation
+      qemu_kvm                                            # For virtualisation
+      quickemu                                            # For virtualisation
+      spice-gtk                                           # For virtualisation
       spotify
       tgpt
-      # virtualbox                        # For virtualisation
-      virt-manager                        # For virtualisation
-      virt-viewer                         # For virtualisation
+      # virtualbox                                        # For virtualisation
+      virt-manager                                        # For virtualisation
+      virt-viewer                                         # For virtualisation
       winetricks
       wineWowPackages.full
       wineWowPackages.waylandFull
@@ -167,12 +169,12 @@
   nixpkgs.config = {
     allowUnfree = true;
     cudaSupport = true;              # Enable CUDA functionality
-    cudaCapabilities = [ "sm_75" ];  # GPU architecture for Quadro T1000
+    cudaCapabilities = [ "75" ];     # GPU architecture for Quadro T1000
   };
 
   # NixOS-NVIDIA configuration guide at: https://nixos.wiki/wiki/Nvidia
   # Prime offload executable script at: $HOME/.local/bin/nvidia-offload
-  # GPU architecture code list at: https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-v>
+  # GPU architecture code list at: https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/
 
   # Enable Vulkan, OpenGL and 32-bit support for steam
   hardware.graphics = {
