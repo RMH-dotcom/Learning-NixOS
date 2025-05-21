@@ -111,12 +111,14 @@
       mullvad-vpn
       osu-lazer-bin
       python312Full
+      python312Packages.faiss                             # For LLMs
       python312Packages.jupyterlab
       python312Packages.matplotlib
       python312Packages.matplotlib-inline
       python312Packages.numpy
       python312Packages.pandas
       python312Packages.scikit-learn
+      python312Packages.tqdm                              # For LLMs
       qemu_kvm                                            # For virtualisation
       quickemu                                            # For virtualisation
       spice-gtk                                           # For virtualisation
