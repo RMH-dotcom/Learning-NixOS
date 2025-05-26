@@ -11,7 +11,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.kernelModules = [ "i915" ];
 
-  # Enable NixOS automatic updates and garbage collection
+  # Enable NixOS flakes, automatic updates and garbage collection
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   system.autoUpgrade = {
     enable = false;
     allowReboot = false;
@@ -69,7 +70,7 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -90,45 +91,42 @@
     description = "My Username";
     extraGroups = [ "docker" "input" "kvm" "libvirtd" "networkmanager" "wheel" "wireshark" ];
     packages = with pkgs; [
-      docker
-      docker-compose
+      #docker
+      #docker-compose
       dolphin-emu
-      dpkg
+      #dpkg
       fwupd
       gcc
       gdb
       git
+      #iproute2                                           # For virtualisation
       jetbrains-mono
-      jetbrains.clion
+      #jetbrains.clion
       jetbrains.pycharm-professional
-      jdk23
+      #jdk23
       (
         koboldcpp.override { config.cudaSupport = true; }
       )
-      libguestfs                                          # For virtualisation
-      libreoffice
-      mono
+      #libguestfs                                          # For virtualisation
+      #libreoffice
+      #mono
       mullvad-vpn
       osu-lazer-bin
+      #OVMF                                               # For virtualisation
       python312Full
-      python312Packages.faiss                             # For LLMs
-      python312Packages.jupyterlab
-      python312Packages.matplotlib
-      python312Packages.matplotlib-inline
-      python312Packages.numpy
-      python312Packages.pandas
-      python312Packages.scikit-learn
-      python312Packages.tqdm                              # For LLMs
-      qemu_kvm                                            # For virtualisation
-      quickemu                                            # For virtualisation
-      spice-gtk                                           # For virtualisation
+      #qemu_full                                          # For virtualisation
+      #quickemu                                           # For virtualisation
+      #spice-gtk                                          # For virtualisation
+      #spice-vdagent                                      # For virtualisation
       spotify
       tgpt
-      # virtualbox                                        # For virtualisation
-      virt-manager                                        # For virtualisation
-      virt-viewer                                         # For virtualisation
-      winetricks
-      wineWowPackages.full
+      #ubootQemuX86                                       # For virtualisation
+      #virglrenderer                                      # For virtualisation
+      #virtio-win                                         # For virtualisation
+      #virtualbox                                         # For virtualisation
+      #virt-manager                                       # For virtualisation
+      #virt-viewer                                        # For virtualisation
+      #wineWowPackages.full
       wineWowPackages.waylandFull
       wireshark
       xorg.xhost
@@ -136,32 +134,35 @@
   };
 
   # All things docker
-  virtualisation.docker = {
-    enable = true;
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-    };
-  };
+  #virtualisation.docker = {
+    #enable = true;
+    #rootless = {
+      #enable = true;
+      #setSocketVariable = true;
+    #};
+  #};
 
   # Enable programs, services and virtualisation software
   programs = {
     firefox.enable = true;
     git.enable = true;
     steam.enable = true;
-    wireshark.enable = true;
   };
   services = {
     mullvad-vpn.enable = true;
+    #qemuGuest.enable = true;
+    #spice-vdagentd.enable = true;
   };
-  virtualisation = {
-    libvirtd = {
-      enable = true;
-      qemu = {
-      package = pkgs.qemu_kvm;
-      };
-    };
-  };
+  #virtualisation = {
+    #libvirtd = {
+      #enable = true;
+      #qemu = {
+        #ovmf.enable = true;
+        #package = pkgs.qemu_kvm;
+      #};
+    #};
+    #spiceUSBRedirection.enable = true;
+  #};
 
   # All things Firmware
   hardware.enableAllFirmware = true;
