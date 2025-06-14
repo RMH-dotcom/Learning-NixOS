@@ -11,12 +11,14 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.kernelModules = [ "i915" ];
 
-  # Enable NixOS flakes, automatic updates and garbage collection
+  # Enable NixOS flakes, libraries, automatic updates and garbage collection
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   system.autoUpgrade = {
     enable = false;
     allowReboot = false;
   };
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [ ninja  ];
   nix.gc = {
     automatic = true;
     dates = "weekly";
@@ -89,12 +91,16 @@
   users.users.myusername = {
     isNormalUser = true;
     description = "My Username";
-    extraGroups = [ "docker" "input" "kvm" "libvirtd" "networkmanager" "wheel" "wireshark" ];
+    extraGroups = [ "docker" "input" "kvm" "libvirtd" "networkmanager" "wheel" ];
     packages = with pkgs; [
+      #cudaPackages.cudatoolkit
+      #cudaPackages.cudnn
+      #cudaPackages.cuda_cudart
       #docker
       #docker-compose
       dolphin-emu
       #dpkg
+      emacs-pgtk
       fwupd
       gcc
       gdb
@@ -102,7 +108,7 @@
       #iproute2                                           # For virtualisation
       jetbrains-mono
       #jetbrains.clion
-      jetbrains.pycharm-professional
+      #jetbrains.pycharm-professional
       #jdk23
       (
         koboldcpp.override { config.cudaSupport = true; }
@@ -111,9 +117,8 @@
       #libreoffice
       #mono
       mullvad-vpn
-      osu-lazer-bin
+      #osu-lazer-bin
       #OVMF                                               # For virtualisation
-      python312Full
       #qemu_full                                          # For virtualisation
       #quickemu                                           # For virtualisation
       #spice-gtk                                          # For virtualisation
@@ -126,9 +131,8 @@
       #virtualbox                                         # For virtualisation
       #virt-manager                                       # For virtualisation
       #virt-viewer                                        # For virtualisation
-      #wineWowPackages.full
+      wineWowPackages.full
       wineWowPackages.waylandFull
-      wireshark
       xorg.xhost
     ];
   };
@@ -172,7 +176,7 @@
   nixpkgs.config = {
     allowUnfree = true;
     cudaSupport = true;              # Enable CUDA functionality
-    cudaCapabilities = [ "75" ];     # GPU architecture for Quadro T1000
+    cudaCapabilities = [ "7.5" ];     # GPU architecture for Quadro T1000
   };
 
   # NixOS-NVIDIA configuration guide at: https://nixos.wiki/wiki/Nvidia
