@@ -1,52 +1,45 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.kernelModules = [ "i915" ];
 
-  # Enable NixOS settings, flakes, libraries, automatic updates and garbage collection
+  # Nix settings
   nix.settings = {
-    experimental-features = [ 
-      "nix-command"
-      "flakes"
-    ];
-    substituters = [
-      "https://nix-community.cachix.org"
-    ];
-    trusted-public-keys = [
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-    ];
+    experimental-features = [ "nix-command" "flakes" ];
+    substituters = [ "https://nix-community.cachix.org" ];
+    trusted-public-keys = [ "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
   };
-  system.autoUpgrade = {
-    enable = false;
-    allowReboot = false;
-  };
-  programs.nix-ld.enable = true;
-  programs.nix-ld.libraries = with pkgs; [ ninja ];
   nix.gc = {
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 7d";
   };
 
+  system.autoUpgrade = {
+    enable = false;
+    allowReboot = false;
+  };
+
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [ ninja ];
+
   # Network and hostname
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
-  # networking.wireless.enable = true;     # Enables wireless support via wpa_supplicant.
+  # networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
 
-  # Set your time zone.
+  # Time zone
   time.timeZone = "Europe/London";
 
-  # Select internationalisation properties
+  # Internationalisation properties
   i18n.defaultLocale = "en_GB.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_GB.UTF-8";
     LC_IDENTIFICATION = "en_GB.UTF-8";
@@ -59,6 +52,9 @@
     LC_TIME = "en_GB.UTF-8";
   };
 
+  # Console keymap
+  console.keyMap = "uk";
+
   # KDE Plasma Desktop Environment
   services.displayManager.defaultSession = "plasma";
   services.displayManager.sddm = {
@@ -67,24 +63,19 @@
     theme = "catppuccin-mocha";
     wayland.enable = true;
   };
-  services.desktopManager.plasma6 = {
-    enable = true;
-  };
-  services.xserver.enable = true;       # Enable the X11 windowing system
+  services.desktopManager.plasma6.enable = true;
 
-  # Configure keymap in X11
+  # X11 windowing system
+  services.xserver.enable = true;
   services.xserver.xkb = {
     layout = "gb";
     variant = "";
   };
 
-  # Console keymap
-  console.keyMap = "uk";
-
   # Printing
   services.printing.enable = true;
 
-  # Enable sound with pipewire
+  # Sound with pipewire
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -94,16 +85,16 @@
     pulse.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-   services.libinput.enable = true;
+  # Touchpad support
+  services.libinput.enable = true;
 
   # Bluetooth
   hardware.bluetooth.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # User account
   users.users.nixoslaptopmak = {
     isNormalUser = true;
-    description = "myusername";
+    description = "Ryan Henry";
     extraGroups = [ "docker" "input" "kvm" "libvirtd" "networkmanager" "wheel" ];
     packages = with pkgs; [
       #brave
@@ -116,7 +107,6 @@
       dolphin-emu
       discord
       #dpkg
-      electron-bin
       emacs-pgtk
       firefox-bin
       fwupd
@@ -124,39 +114,41 @@
       gdb
       git
       heroic
-      #iproute2                                           # For virtualisation
+      #iproute2
       jetbrains-mono
       #jetbrains.clion
       #jetbrains.pycharm-professional
       #jdk23
-      (
-        koboldcpp.override { config.cudaSupport = true; }
-      )
-      #libguestfs                                          # For virtualisation
+      (koboldcpp.override { config.cudaSupport = true; })
+      #libguestfs
       #libreoffice
+      linuxKernel.packages.linux_zen.cpupower
       maven
       #mono
       mullvad-browser
       mullvad-vpn
       #osu-lazer-bin
-      #OVMFFull                                           # For virtualisation
-      #qemu_full                                          # For virtualisation
-      #quickemu                                           # For virtualisation
-      #spice-gtk                                          # For virtualisation
-      #spice-vdagent                                      # For virtualisation
+      #OVMFFull
+      parabolic
+      protonup-qt
+      #qemu_full
+      #quickemu
+      #spice-gtk
+      #spice-vdagent
       spotify
       tgpt
-      #ubootQemuX86                                       # For virtualisation
-      #virglrenderer                                      # For virtualisation
-      #virtio-win                                         # For virtualisation
-      #virtualbox                                         # For virtualisation
-      #virt-manager                                       # For virtualisation
-      #virt-viewer                                        # For virtualisation
+      #ubootQemuX86
+      #virglrenderer
+      #virtio-win
+      #virtualbox
+      #virt-manager
+      #virt-viewer
+      vlc
       xorg.xhost
     ];
   };
 
-  # All things docker
+  # Docker
   #virtualisation.docker = {
     #enable = true;
     #rootless = {
@@ -165,10 +157,18 @@
     #};
   #};
 
-  # Enable nixpkgs, programs, services and virtualisation software
-  nixpkgs.config.permittedInsecurePackages = [
-    "qtwebkit-5.212.0-alpha4"
-  ];
+  # Nixpkgs settings
+  nixpkgs.config = {
+    allowUnfree = true;
+    cudaSupport = true;
+    cudaCapabilities = [ "7.5" ];
+    permittedInsecurePackages = [ "qtwebkit-5.212.0-alpha4" ];
+    packageOverrides = pkgs: {
+      firefox = pkgs.firefox-bin;
+    };
+  };
+
+  # Programs and services
   programs = {
     firefox.enable = true;
     gamemode.enable = true;
@@ -184,6 +184,8 @@
     #qemuGuest.enable = true;
     #spice-vdagentd.enable = true;
   };
+
+  # Virtualisation
   #virtualisation = {
     #libvirtd = {
       #enable = true;
@@ -195,22 +197,11 @@
     #spiceUSBRedirection.enable = true;
   #};
 
-  # All things Firmware
+  # Firmware
   hardware.enableAllFirmware = true;
   services.fwupd.enable = true;
 
-  # Allow unfree packages, and Hardware acceleration (CUDA)
-  nixpkgs.config = {
-    allowUnfree = true;
-    cudaSupport = true;              # Enable CUDA functionality
-    cudaCapabilities = [ "7.5" ];     # GPU architecture for Quadro T1000
-  };
-
-  # NixOS-NVIDIA opengl configuration guide at: https://nixos.wiki/wiki/Nvidia
-  # Prime offload executable script at: $HOME/.local/bin/nvidia-offload
-  # GPU architecture code list at: https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-v>
-
-  # Enable Vulkan, OpenGL and 32-bit support for steam
+  # Graphics
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -227,7 +218,6 @@
       libva-utils
       libvdpau
       libvdpau-va-gl
-      mangohud
       mesa
       nvidia-vaapi-driver
       vkbasalt
@@ -236,6 +226,7 @@
       vulkan-loader
       vulkan-utility-libraries
       wine64Packages.waylandFull
+      xmake
     ];
     extraPackages32 = with pkgs.pkgsCross.musl32; [
       dxvk
@@ -243,9 +234,8 @@
     ];
   };
 
-  # Load nvidia driver for Xorg and Wayland
+  # Nvidia drivers
   services.xserver.videoDrivers = [ "nvidia" ];
-
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = true;
@@ -253,44 +243,29 @@
     open = false;
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-
     prime = {
       offload = {
         enable = true;
         enableOffloadCmd = true;
       };
-      intelBusId = "PCI:0:2:0";  # lspci | grep VGA | grep Intel
-      nvidiaBusId = "PCI:1:0:0"; # lspci | grep VGA | grep NVIDIA
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
     };
   };
 
+  # System packages
   environment.systemPackages = with pkgs; [
     jetbrains-mono
-  (
-    pkgs.catppuccin-sddm.override {
+    (pkgs.catppuccin-sddm.override {
       background = "${/home/nixoslaptopmak/Pictures/bvs01.jpg}";
       font = "jetbrains-mono";
       fontSize = "12";
-    }
-  )];
+    })
+  ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
+  # Firewall
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
@@ -300,5 +275,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
-
 }
